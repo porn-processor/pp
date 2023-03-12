@@ -1,6 +1,8 @@
 # Porn Processor - automatically clean, remux, tag, and move downloaded porn files
 (rough draft / first pass documentation)
 
+So you wish there was an *arr for porn... Yeah, me too. Using QBittorrent's RSS Downloader and Porn Processor you can achieve nearly the same results.
+
 This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet again to add features/settings for other people) to automatically process downloaded porn files and make them readily available to my Plex media server. It's not perfect, but it handles 99% of what I need. pp has freed up countless hours of my time from manually renaming, tagging, and moving files to my libraries. It used to be so bad that management was more time then watching the videos. Hopefully it will be of use to you as well. pp is intended to be used along with QBittorrent and it's RSS Downlaoder function.
 
 # ASSUMPTIONS:
