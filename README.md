@@ -76,6 +76,13 @@ NOTE: The predefined destinations are just easy to type shortcuts. You can defin
 
 **Edit pp-taggers.txt.** This is going to be the biggest and most important file to edit. It contains the variables for what to match, what to tag the match with, where to move the files to, and an optional genre tag. Your source comparison for this file should be your QBittorrent RSS Downloader Downlaod Rules. The supplied pp-taggers.txt has examples given. Some more examples for you include Example 1: If you have a collection of Eva Elfie videos stored in a directory as a collection, you'd have a line such as `Eva.Elfie,Eva Elfie,pornstars,Russian` which would match "Eva.Elfie" from the torrent's download folder name, add "Eva Elfie" as the album tag, move the video to the designated "**PORNSTARS\_DESTINATION**/Eva Elfie," and add "Russian" to the genre along with the default "Porn" genre. Example 2: If you collect the series ATKGirlfriends you'd have a line such as `ATKGirlfriends,same,series,` which would match ATKGirlfriends from the torrent's download folder name, add "ATKGirlfriends" as the album tag ("same" for tag equals whatever the match is, you could repeat "ATKGirlfriends" or use "same" to type less), and move the video to the designated "**SERIES\_DESTINATION**/ATKGirlfriends." No genre is specified so it will be tagged with the default "Porn" genre and nothing else. NOTE: In all cases you can override the predefined **PORNSTARS\_DESTINATION** and **SERIES\_DESTINATION** destinations with a full path such as "/porn/pornstars/Eva Elfie" or /porn/series/ATKGirlfriends."
 
+Your logs will look similar to this once you're setup:
+
+![image](https://user-images.githubusercontent.com/127630165/224518527-c86906c0-f9e3-4600-960e-dfdface23996.png)
+
+**MINOR BUG**
+
+* After processing a directory created by QBittorrent for a torrent's files that originally didn't have a subdirectory in the torrent (see the REQUIREMENTS' 3rd bulletpoint), an error saying "mv: cannot stat '/downloads/complete/PORN/torrentname': No such file or directory" will occur even though that directory gets moved to the **PROCESSED\_DESTINATION**.
 
 **POSSIBLE** future updates:
 
