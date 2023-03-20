@@ -55,7 +55,7 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 * **CREATE\_MISSING\_DIRS** - set to true to create any missing destination directories in your library
 * **DEL\_DUPES** - set to true to delete new files that are duplicates of files already in your library. When false, dupes will be held for inspection in **HOLD\_DESTINATION/\_DUPES**. 
 * **DEL\_PROCESSED\_DIRS** - set to true to delete the torrent download directory after processing. When false, the directory will be held for inspection in **PROCESSED\_DESTINATION**.
-* **ONLY\_PROCESS\_CATEGORY** - set to true if all your porn torrents are set to a category of **PROCESS\_CATEGORY** and you want to ignore all non-porn downloads. NOTE: Not compatible with Transmission.
+* **ONLY\_PROCESS\_CATEGORY** - set to true if all your porn torrents are set to a category of **PROCESS\_CATEGORY** and you want to ignore all non-porn downloads. **NOTE:** Not compatible with Transmission.
 * **OVERWRITE\_OLD\_CODECS** - set to true if you want to overwrite original files with dupes that use nextgen codecs such as HEVC/x265/h265/av1/vp9
 * **PREPEND\_WITH\_TAG** - set to true to prepend the .MP4 file with the album tag.
 * **PROCESS\_CATEGORY** - string to define which torrent cataegory to process when **ONLY\_PROCESS\_CATEGORY** is set to true; ie. "PORN"
@@ -71,7 +71,7 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 * **SERIES\_DESTINATION** - directory to put porn series collections in. The matched tag from pp-taggers.txt will be appended to the path.
 * **SERIES\_KEEPERS\_DESTINATION** - directory to put porn series collections in that you want to keep seperate possibly for backup. The matched tag from pp-taggers.txt will be appended to the path. You probably don't need this.
 
-NOTE: The predefined destinations are just easy to type shortcuts. You can define individual full paths in pp-taggers.txt.
+**NOTE:** The predefined destinations are just easy to type shortcuts. You can define individual full paths in pp-taggers.txt.
 
 **Edit pp-deleters.txt** and add any file names, one per line, that you want deleted from the torrent's download directory. If you have **DEL\_PROCESSED\_DIRS** set to true there's no need for this as the directory will be deleted after processing. For the most part this is legacy pp but can be useful for deleting files from your non-porn downloads as well. The supplied pp-deleters.txt has examples given.
 
