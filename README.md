@@ -93,9 +93,6 @@ Your logs will look similar to this once you're setup:
 
 ![image](https://user-images.githubusercontent.com/127630165/224518527-c86906c0-f9e3-4600-960e-dfdface23996.png)
 
-**MINOR BUG:**
-
-* After processing a directory created by QBittorrent for a torrent's files that originally didn't have a subdirectory in the torrent (see the REQUIREMENTS' 3rd bulletpoint), an error saying "mv: cannot stat '/downloads/complete/PORN/torrentname': No such file or directory" will occur even though that directory gets moved to the **PROCESSED\_DESTINATION**.
 
 **POSSIBLE** future updates:
 
