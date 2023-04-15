@@ -39,6 +39,13 @@ function print_footer {
   echo '----------------------------------------------------------------------------------'
 }
 
+# Print footer for reprocessing
+function print_footer2 {
+  echo "  ** FINISHED REPROCESSING FILES FOUND IN $CONTENTPATH"
+  echo $(date)
+  echo '_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-'
+}
+
 function install_exiftool {
 # Install exiftool (required) on debian and alpine
   exiftool -ver > /dev/null 2>&1
@@ -142,6 +149,7 @@ function remux_avi_files {
     if ffmpeg -i "$file" -c copy "${file/.avi/}".mp4 > /dev/null 2>&1; then
       echo "    ** REMUXED $file to MP4"
       REMUXED_FILE=true
+      MP4_NUM_FILES=$((MP4_NUM_FILES+1))
       rm "$file"
     fi
   done
@@ -158,6 +166,7 @@ function remux_mkv_files {
     if ffmpeg -i "$file" -c copy "${file/.mkv/}".mp4 > /dev/null 2>&1; then
       echo "    ** REMUXED $file to MP4"
       REMUXED_FILE=true
+      MP4_NUM_FILES=$((MP4_NUM_FILES+1))
       rm "$file"
     fi
   done
@@ -174,6 +183,7 @@ function remux_mov_files {
     if ffmpeg -i "$file" -c copy "${file/.mov/}".mp4 > /dev/null 2>&1; then
       echo "    ** REMUXED $file to MP4"
       REMUXED_FILE=true
+      MP4_NUM_FILES=$((MP4_NUM_FILES+1))
       rm "$file"
     fi
   done
@@ -190,6 +200,7 @@ function remux_ts_files {
     if ffmpeg -i "$file" -c copy "${file/.ts/}".mp4 > /dev/null 2>&1; then
       echo "    ** REMUXED $file to MP4"
       REMUXED_FILE=true
+      MP4_NUM_FILES=$((MP4_NUM_FILES+1))
       rm "$file"
     fi
   done
@@ -206,6 +217,7 @@ function remux_wmv_files {
     if ffmpeg -i "$file" -c copy "${file/.wmv/}".mp4 > /dev/null 2>&1; then
       echo "    ** REMUXED $file to MP4"
       REMUXED_FILE=true
+      MP4_NUM_FILES=$((MP4_NUM_FILES+1))
       rm "$file"
     fi
   done
@@ -319,7 +331,7 @@ function move_files {
      else
         echo "    ** DESTINATION ($DESTINATION) does not exist. Aborting..."
         print_footer
-        return 1
+        exit 1
      fi
   fi
   if ! test -d "$HOLD_DESTINATION/_DUPES" ; then mkdir "$HOLD_DESTINATION/_DUPES"; fi
@@ -334,11 +346,6 @@ function move_files {
                  echo "    ** MOVED: $file to $HOLD_DESTINATION"
                  MOVEDFILE=true
               fi
-           fi
-           if ($DEL_PROCESSED_DIRS); then
-              rm "$CONTENTPATH"
-            else
-              mv "$CONTENTPATH" "$PROCESSED_DESTINATION"
            fi
      done
   else
@@ -356,11 +363,6 @@ function move_files {
             echo "    ** MOVED: $file to $HOLD_DESTINATION/_DUPES"
             MOVEDFILE=true
          fi
-       fi
-       if ($DEL_PROCESSED_DIRS); then
-          rm "$CONTENTPATH"
-       else
-          mv "$CONTENTPATH" "$PROCESSED_DESTINATION"
        fi
      done
   fi
@@ -382,12 +384,14 @@ function move_files {
             fi
          fi
        fi
-       if ($DEL_PROCESSED_DIRS); then
-          rm "$CONTENTPATH"
-       else
-          mv "$CONTENTPATH" "$PROCESSED_DESTINATION"
-       fi
   done
+  if ($MOVEDFILE); then
+     if ($DEL_PROCESSED_DIRS); then
+        rm "$CONTENTPATH"
+     else
+        mv "$CONTENTPATH" "$PROCESSED_DESTINATION"
+     fi
+  fi
   if ! ($MOVEDFILE); then echo "    ** NOTHING MOVED"; fi
 }
 
@@ -453,7 +457,7 @@ install_ffmpeg
 
 # Test if exiftool and ffmpeg are installed
 exiftool -ver > /dev/null 2>&1
-if ! [ $? -eq 0 ]; then echo "  ** ERROR: exiftool not installed. Aborting..."; print_footer; return 1; fi
+if ! [ $? -eq 0 ]; then echo "  ** ERROR: exiftool not installed. Aborting..."; print_footer; exit 1; fi
 ffmpeg -version > /dev/null 2>&1
 if ! [ $? -eq 0 ]; then echo "  ** WARNING: ffmpeg not installed. Remuxing disabled."; REMUX_AVI_FILES=false; REMUX_MKV_FILES=false; REMUX_MOV_FILES=false; REMUX_TS_FILES=false; REMUX_WMV_FILES=false; fi
 
@@ -488,17 +492,17 @@ print_footer
 if ($REPROCESS_FILES); then
   cd $REPROCESS_PATH
   numdirs=$(ls | wc -l)
-  if [ $numdirs -eq 0 ]; then exit; fi
+  if [ $numdirs -eq 0 ]; then REPROCESSING=false; exit; fi
+  REPROCESSING=true
   for dirs in *; do
     CONTENTPATH="$REPROCESS_PATH/$dirs"
     echo '+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-'
     echo $(date)
     echo "  ** REPROCESSING FILES FOUND IN $CONTENTPATH"
     start_processing
-    echo "  ** FINISHED REPROCESSING FILES FOUND IN $CONTENTPATH"
-    echo $(date)
-    echo '_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-'
+    print_footer2
   done
+  REPROCESSING=false
 fi
 
 ### PROCESSING END
