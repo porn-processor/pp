@@ -56,13 +56,13 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 * **STRIP\_FILES** - set to true to remove strings in files such as scene group "tagging," resolution info, etc.
 * **TAG\_FILES** - set to false if you don't want to tag files.
 * **CONVERT\_TO\_LC** - set to true to convert files to lower case; this helps avoid some dupes.
-* * **CONVERT\_TO\_UC** - set to true to convert files to upper case; this helps avoid some dupes.
+* **CONVERT\_TO\_UC** - set to true to convert files to upper case; this helps avoid some dupes.
 * **CREATE\_MISSING\_DIRS** - set to true to create any missing destination directories in your library
 * **DEL\_DUPES** - set to true to delete new files that are duplicates of files already in your library. When false, dupes will be held for inspection in **HOLD\_DESTINATION/\_DUPES**. 
 * **DEL\_PROCESSED\_DIRS** - set to true to delete the torrent download directory after processing. When false, the directory will be held for inspection in **PROCESSED\_DESTINATION**.
 * **EXTRACT\_ARCHIVES** - set to true to extract RAR and ZIP files that may contain video files.
 * **DESIRED\_HEIGHT** - Used for determining upgrades and downgrades. Set to your desired video resolution for files, default is 1080.
-* **DESIRED\_WIDTH**" - Used for determining upgrades and downgrades. Set to your desired video resolution for files, default is 1920.
+* **DESIRED\_WIDTH** - Used for determining upgrades and downgrades. Set to your desired video resolution for files, default is 1920.
 * **MAX\_DESIRED\_HEIGHT** - Used for determining upgrades, downgrades, and unwanted (too large) videos. Set to your maximum allowed video resolution for files, default is 2160.
 * **MAX\_DESIRED\_WIDTH** - Used for determining upgrades, downgrades, and unwanted (too large) videos. Set to your maximum allowed video resolution for files, default is 3840.
 * **MODERN\_CODECS** - List of nextgen codecs allowed to replace files with older less efficent codes, default is "hevc,h265,265,av1,vp9".
@@ -105,8 +105,7 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 
 Your logs will look similar to this once you're setup:
 
-<img width="394" alt="image" src="https://github.com/porn-processor/pp/assets/127630165/c7e8a369-e3e2-433e-98b4-661d51d8ef77">
-
+![image](https://github.com/porn-processor/pp/assets/127630165/a8501168-7fce-4204-96b6-43cbdea75a76)
 
 
 **POSSIBLE** future updates:
