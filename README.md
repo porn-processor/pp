@@ -14,17 +14,21 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 
 # pp FEATURES:
 * Fully configurable from external files with the hopes you don't need to edit the script.
-* Delete unwanted files; e.g. RARBG\_DO\_NOT\_MIRROR.exe
-* Strip files of scene "tagging," e.g. remove `.XXX.1080p.MP4-KTR` from file names, as well as replacing the copyright and comment tags with " ". (Sorry scene peeps, we still love and thank you but don't appreciate the vandalism of the files.)
+* Delete unwanted files; e.g. RARBG\_DO\_NOT\_MIRROR.exe (R.I.P. RARBG!)
+* Strip files of scene "tagging," e.g. strip `.XXX.1080p.MP4-KTR` from file names, as well as replacing the copyright and comment tags with " ". (Sorry scene peeps, we still love and thank you but don't appreciate the vandalism of the files.)
 * Rename parts of files; e.g. `btra` to `BigTitsRoundAsses`
-* Remux AVI, MKV, MOV, TS, and WMV files to MP4. (Yes MKV is arguably a better format than MP4, but it's also a pain in the ass to add metadata to. exiftool is universally available but basically only supports MP4 files and minimally tagging them. Taggers with more features are not as easy to install into containers.)
+* Extract videos from RAR and ZIP files for processing.
+* Rename MV4 files to MP4. (Yes MV4 is a better naming convention but MP4 is much more prevalent.)
+* Remux AVI, MKV, MOV, TS, and WMV files to MP4. (Yes MKV is arguably a better format than MP4, but it's also a pain in the ass to add metadata to. exiftool is universally available but basically only supports MP4 files and minimally tagging them. CLI taggers with more features are not readily available or as easy to install into containers.)
 * Tag files with metadata. (Album field for collections in Plex and other media servers.); e.g. `ExxxtraSmall`. `Porn` is added as the genre to all MP4 files.
 * Prepend files with the tag; i.e. `BangBus - 22.03.16.Sisi.Pesos.mp4` (Don't forget to strip "bangbus.") Not recommended when using PhoenixAdult Agent with PMS.
-* Convert to lower case. This dramatically helps avoid dupes.
-* Dupe checking. Can move dupes to designated folder for validation or they can be deleted. Original files can be overwritten with files using nextgen codecs such has HEVC/x265/h265/av1/vp9.
-* Move processed files to library location. **NOTE:** Files/directories that are not processed, i.e. non-video files are left in their original download location. MP4 files without a defined destination will be kept in a holding area.
+* Convert all files to lower or upper case. This dramatically helps avoid dupes.
+* Dupe checking. Can delete dupes or move to holding area for inspection.
+* Upgrade/Replace existing files with new versions of higher or lower resolution or encoded using nextgen codecs (HEVC/x265/h265/av1/vp9).
+* Move processed files to library location. **NOTE:** Files/directories that are not processed, i.e. non-video files are left in their original download location. MP4 and MKV files without a defined destination will be kept in a holding area.
 * Clean up processed torrent download directories by moving or deleting them after processing.
-* Announcements of main functions running, success, failure, and not applicable viewable in the logs.
+* Run an additional custom script (you write it) for additional processing not done by pp.
+* Announcements of all features running, success, failure, and not applicable viewable in the logs.
 
 # REQUIREMENTS:
 
@@ -52,17 +56,27 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 * **STRIP\_FILES** - set to true to remove strings in files such as scene group "tagging," resolution info, etc.
 * **TAG\_FILES** - set to false if you don't want to tag files.
 * **CONVERT\_TO\_LC** - set to true to convert files to lower case; this helps avoid some dupes.
+* * **CONVERT\_TO\_UC** - set to true to convert files to upper case; this helps avoid some dupes.
 * **CREATE\_MISSING\_DIRS** - set to true to create any missing destination directories in your library
 * **DEL\_DUPES** - set to true to delete new files that are duplicates of files already in your library. When false, dupes will be held for inspection in **HOLD\_DESTINATION/\_DUPES**. 
 * **DEL\_PROCESSED\_DIRS** - set to true to delete the torrent download directory after processing. When false, the directory will be held for inspection in **PROCESSED\_DESTINATION**.
+* **EXTRACT\_ARCHIVES** - set to true to extract RAR and ZIP files that may contain video files.
+* **DESIRED\_HEIGHT** - Used for determining upgrades and downgrades. Set to your desired video resolution for files, default is 1080.
+* **DESIRED\_WIDTH**" - Used for determining upgrades and downgrades. Set to your desired video resolution for files, default is 1920.
+* **MAX\_DESIRED\_HEIGHT** - Used for determining upgrades, downgrades, and unwanted (too large) videos. Set to your maximum allowed video resolution for files, default is 2160.
+* **MAX\_DESIRED\_WIDTH** - Used for determining upgrades, downgrades, and unwanted (too large) videos. Set to your maximum allowed video resolution for files, default is 3840.
+* **MODERN\_CODECS** - List of nextgen codecs allowed to replace files with older less efficent codes, default is "hevc,h265,265,av1,vp9".
 * **ONLY\_PROCESS\_CATEGORY** - set to true if all your porn torrents are set to a category of **PROCESS\_CATEGORY** and you want to ignore all non-porn downloads. **NOTE:** Not compatible with Transmission.
-* **OVERWRITE\_OLD\_CODECS** - set to true if you want to overwrite original files with dupes that use nextgen codecs such as HEVC/x265/h265/av1/vp9
+* **OVERWRITE\_LOWER\_RESOLUTION** - set to true to enable upgrading lower resolution videos.
+* **OVERWRITE\_HIGHER\_RESOLUTION** - set to true to enable downgrading videos with "too high" a resolution determined by your **MAX\_DESIRED\_HEIGHT** and **MAX\_DESIRED\_WIDTH**.
+* **OVERWRITE\_OLD\_CODECS** - set to true if you want to overwrite original files with dupes that use nextgen codecs defined in **MODERN\_CODECS**.
 * **PREPEND\_WITH\_TAG** - set to true to prepend the .MP4 file with the album tag.
 * **PROCESS\_CATEGORY** - string to define which torrent cataegory to process when **ONLY\_PROCESS\_CATEGORY** is set to true; ie. "PORN"
 * **REPROCESS\_FILES** - set to true to reprocess torrent directories moved to **REPROCESS\_PATH**. You shouldn't need this. This is basically a debug feature.
 * **RUN\_CHOWN** - allows you to run chown owner on files before processing
 * **RUN\_CHGRP** - allows you to run chgrp group on files before processing
 * **RUN\_CHMOD** - allows you to run chmod +/-xxx on files before processing
+* **CUSTOM\_SCRIPT** - if found, this script is run after all other pp processing. Default value is "/config/pp-custom.sh" but you can change it. 
 * **HOLD\_DESTINATION** - directory to put post-processed files with no matching location to move to; i.e. misc stuff you download that might not be automated.
 * **PORNSTARS\_DESTINATION** - directory to put porn star collections in. The matched tag from pp-taggers.txt will be appended to the path.
 * **PORNSTARS\_KEEPERS\_DESTINATION** - directory to put porn star collections in that you want to keep seperate possibly for backup, the matched tag from pp-taggers.txt will be appended to the path. You probably don't need this.
@@ -91,11 +105,13 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 
 Your logs will look similar to this once you're setup:
 
-![image](https://user-images.githubusercontent.com/127630165/224518527-c86906c0-f9e3-4600-960e-dfdface23996.png)
+<img width="394" alt="image" src="https://github.com/porn-processor/pp/assets/127630165/c7e8a369-e3e2-433e-98b4-661d51d8ef77">
+
 
 
 **POSSIBLE** future updates:
 
-* Move pornstars and series to seperate match files so that a series can be tagged as the "album" as well as tagging a matched pornstar to the "album artist" tag.
+* Move pornstars and series to seperate match files so that a series can be tagged as the "album" as well as tagging a matched pornstar to the actors/cast tag. (Need to find a CLI program that can add that XMP tag.)
 * Ability to add more than one custom genre. (Adding two or more genres in a comma seperate value file results in quotes that need to be parsed correctly before passing to exiftool)
-* Process RAR and ZIP files. Some Tawainese porn comes packaged in RAR files. Due to the presumption that most people only run one torrent download program, it would only process RAR and ZIP files that were categorized as **PROCESS_CATEGORY**. I would probably just extract the archive before normal processing.
+* More upgrade/downgrade logic to be added.
+* Special handling of VR video files.
