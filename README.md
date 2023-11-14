@@ -106,6 +106,7 @@ This is a little bash script I wrote, re-wrote, and re-wrote again, (and yet aga
 Your logs will look similar to this once you're setup:
 
 ![image](https://github.com/porn-processor/pp/assets/127630165/a8501168-7fce-4204-96b6-43cbdea75a76)
+![image](https://github.com/porn-processor/pp/assets/127630165/bafb04b3-941b-49d6-9599-8689bec81d25)
 
 
 **POSSIBLE** future updates:
